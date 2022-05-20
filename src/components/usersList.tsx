@@ -2,31 +2,44 @@ import { useState, useEffect, FC } from "react";
 import axios from "axios";
 import User from "./user";
 import { IUser } from "../types/types";
-import { useParams } from "react-router-dom";
+import { useParams, Outlet } from "react-router-dom";
 import styled from "styled-components";
+import UserInfo from "./userInfo";
 
 interface IUsersList {
-   users: IUser[];
+   users?: IUser[];
+}
+
+interface IParams {
+   id?: string;
 }
 
 const UsersWrapper = styled.div`
    height: 100%;
    width: 350px;
    position: fixed;
-   top: 0px;
+   top: 100px;
    left: -30px;
    overflow: scroll;
 `;
 
 const UsersList: FC<IUsersList> = () => {
-   const params = useParams();
-
+   const params: IParams = useParams();
    const users_url = "https://dummyapi.io/data/v1/user/";
    const [users, setUsers] = useState<IUser[]>([]);
+   const [paramId, setParam] = useState<string>("");
 
    useEffect(() => {
       fetchUsers();
    }, []);
+
+   useEffect(() => {
+      handleParam();
+   }, [paramId]);
+
+   const handleParam = () => {
+      setParam(params.id || "");
+   };
 
    async function fetchUsers() {
       try {
@@ -41,18 +54,8 @@ const UsersList: FC<IUsersList> = () => {
       }
    }
 
-   const handleClick = (id: string) => {
-      console.log(id);
-   };
-
-   const userInfo = () => {
-      if (8) {
-         return <div></div>;
-      }
-   };
-
-   if (users) {
-      return (
+   return (
+      <>
          <UsersWrapper>
             <ul>
                {users.map((user: IUser) => (
@@ -62,16 +65,14 @@ const UsersList: FC<IUsersList> = () => {
                         firstName={user.firstName}
                         lastName={user.lastName}
                         picture={user.picture}
-                        // onClick={handleClick}
                      />
                   </li>
                ))}
             </ul>
-            <div>{userInfo()}</div>
          </UsersWrapper>
-      );
-   }
-   return null;
+         <Outlet />
+      </>
+   );
 };
 
 export default UsersList;
