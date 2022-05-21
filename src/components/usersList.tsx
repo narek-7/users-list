@@ -2,16 +2,12 @@ import { useState, useEffect, FC, useCallback } from "react";
 import axios from "axios";
 import User from "./user";
 import { IUser } from "../types/types";
-import { useParams, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import { Virtuoso } from "react-virtuoso";
 
 interface IUsersList {
    users?: IUser[];
-}
-
-interface IParams {
-   id?: string;
 }
 
 const UsersWrapper = styled.div`
@@ -20,9 +16,8 @@ const UsersWrapper = styled.div`
 `;
 
 const UsersList: FC<IUsersList> = () => {
-   const params: IParams = useParams();
-   const users_url = "https://dummyapi.io/data/v1/user/";
    const [users, setUsers] = useState<any>([]);
+   let [currentPage, setCurrentPage] = useState(1);
 
    async function fetchUsers(pageNumber: any = 1) {
       const response = await axios.get(
@@ -38,7 +33,8 @@ const UsersList: FC<IUsersList> = () => {
    }
 
    const loadMore = useCallback(() => {
-      fetchUsers(3).then((response) => setUsers([...users, ...response.data]));
+      setCurrentPage((currentPage += 1));
+      fetchUsers(currentPage).then((response) => setUsers([...users, ...response.data]));
    }, [users]);
 
    const Footer = () => <div>Loading...</div>;

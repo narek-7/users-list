@@ -24,7 +24,6 @@ export const TitleWrapper = styled.div`
 const UserInfo: FC<any> = () => {
    const [user, setUser] = useState<any>({});
    const params = useParams();
-   console.log(user);
 
    useEffect(() => {
       fetchUser(params.id);
