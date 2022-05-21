@@ -20,18 +20,16 @@ const UserWrapper = styled.div`
    background-repeat: no-repeat;
 `;
 
-const User: FC<IUser> = ({ id, firstName, lastName, picture }: IUser) => {
-   console.log("id", id);
-
+const User: FC<IUser> = ({ id = "245445dw", firstName, lastName, picture }: IUser) => {
    return (
-      <Link to={id && id}>
+      <Link to={id}>
          <UserWrapper>
             <img
                src={picture}
                alt=""
                style={{ height: "70px", width: "70px", borderRadius: "50px" }}
             />
-            {firstName + " " + lastName}{" "}
+            {firstName + " " + lastName}
          </UserWrapper>
       </Link>
    );
