@@ -5,16 +5,26 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const UserInfoWrapper = styled.div`
-   position: relative;
-   top: 100px;
-   left: 300px;
-   font-size: 20px;
-   margin-bottom: 100px;
+   border: 1px solid black;
+   padding: 1rem;
+   position: fixed;
+   top: 50px;
+   left: 350px;
+   font-size: 22px;
+   font-style: italic;
+   font-family: Yu Gothic UI Light, Calibri Light, sans-serif;
+`;
+
+const TitleWrapper = styled.div`
+   font-size: 52px;
+   margin-bottom: 30px;
+   color: #0066ff;
 `;
 
 const UserInfo: FC<any> = () => {
    const [user, setUser] = useState<any>({});
    const params = useParams();
+   console.log(user);
 
    useEffect(() => {
       fetchUser(params.id);
@@ -35,10 +45,14 @@ const UserInfo: FC<any> = () => {
    }
    return (
       <UserInfoWrapper>
-         <div>
-            <h1>{user.firstName}</h1>
-            <h2>{user.lastName}</h2>
-         </div>
+         <TitleWrapper>
+            <div>{`${user.firstName} ${user.lastName}`}</div>
+         </TitleWrapper>
+         <img src={user.picture} alt="" />
+         <div>{`Email:  ${user.email}`}</div>
+         <div>{`Sex:  ${user.gender}`}</div>
+         <div>{`Birthdate:  ${new Date(user.dateOfBirth).toLocaleDateString()}`}</div>
+         <div>{`Phone:  ${user.phone}`}</div>
       </UserInfoWrapper>
    );
 };
