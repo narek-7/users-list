@@ -23,15 +23,6 @@ const UsersList: FC<IUsersList> = () => {
    const params: IParams = useParams();
    const users_url = "https://dummyapi.io/data/v1/user/";
    const [users, setUsers] = useState<any>([]);
-   const [paramId, setParam] = useState<string>("");
-
-   useEffect(() => {
-      handleParam();
-   }, [paramId]);
-
-   const handleParam = () => {
-      setParam(params.id || "");
-   };
 
    async function fetchUsers(pageNumber: any = 1) {
       const response = await axios.get(

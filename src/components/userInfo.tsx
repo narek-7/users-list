@@ -4,7 +4,7 @@ import { FC } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-const UserInfoWrapper = styled.div`
+export const UserInfoWrapper = styled.div`
    border: 1px solid black;
    padding: 1rem;
    position: fixed;
@@ -15,7 +15,7 @@ const UserInfoWrapper = styled.div`
    font-family: Yu Gothic UI Light, Calibri Light, sans-serif;
 `;
 
-const TitleWrapper = styled.div`
+export const TitleWrapper = styled.div`
    font-size: 52px;
    margin-bottom: 30px;
    color: #0066ff;
@@ -43,18 +43,22 @@ const UserInfo: FC<any> = () => {
          console.log(err.response);
       }
    }
-   return (
-      <UserInfoWrapper>
-         <TitleWrapper>
-            <div>{`${user.firstName} ${user.lastName}`}</div>
-         </TitleWrapper>
-         <img src={user.picture} alt="" />
-         <div>{`Email:  ${user.email}`}</div>
-         <div>{`Sex:  ${user.gender}`}</div>
-         <div>{`Birthdate:  ${new Date(user.dateOfBirth).toLocaleDateString()}`}</div>
-         <div>{`Phone:  ${user.phone}`}</div>
-      </UserInfoWrapper>
-   );
+
+   if (user.picture) {
+      return (
+         <UserInfoWrapper>
+            <TitleWrapper>
+               <div>{`${user.firstName} ${user.lastName}`}</div>
+            </TitleWrapper>
+            <img src={user.picture} alt="" />
+            <div>{`Email:  ${user.email}`}</div>
+            <div>{`Sex:  ${user.gender}`}</div>
+            <div>{`Birthdate:  ${new Date(user.dateOfBirth).toLocaleDateString()}`}</div>
+            <div>{`Phone:  ${user.phone}`}</div>
+         </UserInfoWrapper>
+      );
+   }
+   return <UserInfoWrapper>{"...Loading"}</UserInfoWrapper>;
 };
 
 export default UserInfo;
