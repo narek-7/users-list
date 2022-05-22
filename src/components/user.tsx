@@ -6,21 +6,16 @@ import { Link } from "react-router-dom";
 const UserWrapper = styled.div`
    overflow: clip;
    position: relative;
-   padding: 6px 8px 6px 16px;
+   padding: 6px 8px 6px 6px;
    height: 500px;
-   text-decoration: none;
-   font-size: 20px;
+   font-size: 16px;
    display: block;
    border-bottom: 1px solid rgb(151, 156, 165);
-   height: 100px;
-   direction: ltr;
+   height: 90px;
    background-color: white;
-   background-image: url("/assets/images/coffee1.jpg");
-   background-position: left top;
-   background-repeat: no-repeat;
 `;
 
-const User: FC<IUser> = ({ id = "245445dw", firstName, lastName, picture }: IUser) => {
+const User: FC<IUser> = ({ id = "", firstName, lastName, picture }: IUser) => {
    return (
       <Link to={id}>
          <UserWrapper>
@@ -29,7 +24,7 @@ const User: FC<IUser> = ({ id = "245445dw", firstName, lastName, picture }: IUse
                alt=""
                style={{ height: "70px", width: "70px", borderRadius: "50px" }}
             />
-            {firstName + " " + lastName}
+            {`${firstName} ${lastName}`}
          </UserWrapper>
       </Link>
    );

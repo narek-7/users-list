@@ -1,8 +1,8 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { FC } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { fetchUser } from "../api/api";
 
 export const UserInfoWrapper = styled.div`
    border: 1px solid black;
@@ -16,6 +16,7 @@ export const UserInfoWrapper = styled.div`
 `;
 
 export const TitleWrapper = styled.div`
+   text-align: center;
    font-size: 52px;
    margin-bottom: 30px;
    color: #0066ff;
@@ -24,24 +25,12 @@ export const TitleWrapper = styled.div`
 const UserInfo: FC<any> = () => {
    const [user, setUser] = useState<any>({});
    const params = useParams();
-
+   
    useEffect(() => {
-      fetchUser(params.id);
+      fetchUser(params.id)
+         .then((response) => setUser(response))
+         .catch((error) => console.log(error));
    }, [params.id]);
-
-   async function fetchUser(id: any) {
-      try {
-         const response = await axios.get(`https://dummyapi.io/data/v1/user/${id}`, {
-            headers: {
-               "app-id": "6285368e6c5fe3f61de44084",
-            },
-         });
-
-         setUser(response.data);
-      } catch (err: any) {
-         console.log(err.response);
-      }
-   }
 
    if (user.picture) {
       return (
@@ -57,7 +46,7 @@ const UserInfo: FC<any> = () => {
          </UserInfoWrapper>
       );
    }
-   return <UserInfoWrapper>{"...Loading"}</UserInfoWrapper>;
+   return <UserInfoWrapper>{"Loading..."}</UserInfoWrapper>;
 };
 
 export default UserInfo;

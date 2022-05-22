@@ -1,10 +1,10 @@
-import { useState, useEffect, FC, useCallback } from "react";
-import axios from "axios";
+import { useState, useEffect, FC, useCallback, useRef } from "react";
 import User from "./user";
 import { IUser } from "../types/types";
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import { Virtuoso } from "react-virtuoso";
+import { fetchUsers } from "../api/api";
 
 interface IUsersList {
    users?: IUser[];
@@ -16,32 +16,22 @@ const UsersWrapper = styled.div`
 `;
 
 const UsersList: FC<IUsersList> = () => {
-   const [users, setUsers] = useState<any>([]);
-   let [currentPage, setCurrentPage] = useState(1);
-
-   async function fetchUsers(pageNumber: any = 1) {
-      const response = await axios.get(
-         `https://dummyapi.io/data/v1/user?page=${pageNumber}&limit=10`,
-         {
-            headers: {
-               "app-id": "6285368e6c5fe3f61de44084",
-            },
-         }
-      );
-
-      return response.data;
-   }
+   const [users, setUsers] = useState<IUser[]>([]);
+   const currentPage = useRef<number>(1);
 
    const loadMore = useCallback(() => {
-      setCurrentPage((currentPage += 1));
-      fetchUsers(currentPage).then((response) => setUsers([...users, ...response.data]));
+      currentPage.current++;
+      fetchUsers(currentPage.current).then((response) =>
+         setUsers([...users, ...response.data])
+      );
    }, [users]);
 
-   const Footer = () => <div>Loading...</div>;
-   console.log("users count", users.length);
+   const Footer = () => <div>{"Loading..."}</div>;
 
    useEffect(() => {
-      fetchUsers().then((response) => setUsers(response.data));
+      fetchUsers()
+         .then((response) => setUsers(response.data))
+         .catch((error) => console.log(error));
    }, []);
 
    return (
